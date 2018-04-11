@@ -81,8 +81,14 @@ const shoppingList = (function(){
   function handleItemCheckClicked() {
     $('.js-shopping-list').on('click', '.js-item-toggle', event => {
       const id = getItemIdFromElement(event.currentTarget);
+      // update the store object checked prop
       store.findAndToggleChecked(id);
-      render();
+      const updatedObject = store.findById(id);
+      // call the api.updateItem, pass Id, updated version of the checked prop of the item, then render
+      console.log(store.findById(id));
+      api.updateItem(id, {name: updatedObject.name, checked: updatedObject.checked}, () => {
+        render();
+      });
     });
   }
   
@@ -105,8 +111,11 @@ const shoppingList = (function(){
       event.preventDefault();
       const id = getItemIdFromElement(event.currentTarget);
       const itemName = $(event.currentTarget).find('.shopping-item').val();
-      store.findAndUpdateName(id, itemName);
-      render();
+      // Use the api to update the state of the store object and re-render
+      api.updateItem(id, (itemName) => {
+        store.findAndUpdateName(id, itemName);
+        render();
+      });
     });
   }
   
