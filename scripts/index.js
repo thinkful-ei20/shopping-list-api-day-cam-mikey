@@ -3,15 +3,37 @@
 
 $(document).ready(function() {
   shoppingList.bindEventListeners();
-  shoppingList.render();
+  // When the DOM is ready, we fetch all the items
+  api.getItems((items) => {
+    // Iterate over EACH of items in the response
+    // and re-render
+    items.forEach((item) => {
+      store.addItem(item);
+      shoppingList.render();
+    });
+  });
 });
 
-store.items.push(Item.create('apples'));
+// Remove code that creates test data in the store.
+// store.items.push(Item.create('apples'));
 
+/*
+// API MODULE TEST
+api.getItems(data => {
+  console.log(data);
+})
+
+console.log(api.BASE_URL);
+*/
+
+/*
+// 3. createItem TEST
 // create new item
 api.createItem('pears', (newItem) => {
+  // console.log(newItem);
   // fetch all items and log them out
   api.getItems((items) => {
     console.log(items);
   });
 });
+*/
