@@ -37,3 +37,22 @@ api.createItem('pears', (newItem) => {
   });
 });
 */
+
+// api.getItems((items) => {
+//   const item = items[0];
+
+//   api.updateItem(item.id, {name: 'foobar'}, () => {
+//     console.log('Updated!');
+//   });
+// });
+
+/*
+// TEST adding an item to the front of the list in the dom
+api.getItems((items) => {
+  const item = items[0];
+
+  api.updateItem(item.id, {name: 'foobar'}, () => {
+    console.log('Updated!');
+  });
+});
+*/

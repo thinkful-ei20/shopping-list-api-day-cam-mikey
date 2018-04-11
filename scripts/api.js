@@ -2,6 +2,8 @@
 /*global $*/
 
 const api = (function() {
+  // Need /items on the BASE_URL to make the ajax calls work below
+  // template string didn't work for /item but worked for /${id}
   const BASE_URL = 'https://thinkful-list-api.herokuapp.com/cam/items';
 
   function getItems(callback) {
@@ -16,7 +18,7 @@ const api = (function() {
     });
 
     $.ajax({
-      url: BASE_URL, // + '/items', // BASE_URL variable on line 5
+      url: BASE_URL, // BASE_URL variable on line 5
       method: 'POST', // POST http method
       contentType: 'application/json', // JSON format
       data: newItem, // JSON.stringified variable on line 13
@@ -24,8 +26,20 @@ const api = (function() {
     });
   }
 
+  // Update an item
+  function updateItem(id, updateData, callback) {
+    $.ajax({
+      url: `${BASE_URL}/${id}`, // Template string to extend the endpoint
+      method: 'PATCH', // PATCH method for updating a pre-existing piece of an object
+      contentType: 'application/json', // JSON format
+      data: JSON.stringify(updateData), // stringify the new data into JSON
+      success: callback, /// callback is used on successful request
+    });
+  }
+
   return {
     getItems,
     createItem,
+    updateItem,
   };
 }());

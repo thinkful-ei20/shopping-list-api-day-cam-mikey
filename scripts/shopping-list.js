@@ -1,4 +1,5 @@
-/* global store */
+'use strict';
+/* global store, $, api */
 
 // eslint-disable-next-line no-unused-vars
 const shoppingList = (function(){
@@ -59,9 +60,15 @@ const shoppingList = (function(){
     $('#js-shopping-list-form').submit(function (event) {
       event.preventDefault();
       const newItemName = $('.js-shopping-list-entry').val();
+      // Call to the api object, add item to store object, and rerender the dom to show it in the list
+      api.createItem(newItemName, (newItem) => {
+        console.log('New Item being added to store and DOM: ' + newItemName);
+        store.addItem(newItem);
+        render();
+      });
       $('.js-shopping-list-entry').val('');
-      store.addItem(newItemName);
-      render();
+      // store.addItem(newItemName);
+      // render();
     });
   }
   
@@ -84,6 +91,8 @@ const shoppingList = (function(){
     $('.js-shopping-list').on('click', '.js-item-delete', event => {
       // get the index of the item in store.items
       const id = getItemIdFromElement(event.currentTarget);
+      // console.log('Deleting item from store and DOM: ' + id);
+      console.log(store.items.length); // shows items being deleted 
       // delete the item
       store.findAndDelete(id);
       // render the updated shopping list
