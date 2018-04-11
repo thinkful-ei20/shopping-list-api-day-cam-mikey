@@ -84,8 +84,7 @@ const shoppingList = (function(){
       // update the store object checked prop
       store.findAndToggleChecked(id);
       const updatedObject = store.findById(id);
-      // call the api.updateItem, pass Id, updated version of the checked prop of the item, then render
-      console.log(store.findById(id));
+      // call the api.updateItem, pass Id, patch new versions of the name and checked properties of the item in the store object, then render
       api.updateItem(id, {name: updatedObject.name, checked: updatedObject.checked}, () => {
         render();
       });
@@ -97,12 +96,14 @@ const shoppingList = (function(){
     $('.js-shopping-list').on('click', '.js-item-delete', event => {
       // get the index of the item in store.items
       const id = getItemIdFromElement(event.currentTarget);
-      // console.log('Deleting item from store and DOM: ' + id);
-      console.log(store.items.length); // shows items being deleted 
-      // delete the item
-      store.findAndDelete(id);
-      // render the updated shopping list
-      render();
+
+      api.deleteItem(id, () => {
+        api.getItems(() => {
+          store.findAndDelete(id);
+          render();
+          console.log(store.items);
+        });
+      });
     });
   }
   
